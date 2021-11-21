@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import iconLogin from '../assets/icons/login.svg';
 import iconUser from '../assets/icons/user.svg';
 import iconLogout from '../assets/icons/logout.svg';
 import { Link } from 'react-router-dom';
-
+import { FirebaseContext } from '../firebase';
+import { getAuth, signOut } from "firebase/auth";
 
 const Aside = styled.aside`
   min-height: 100vh;
@@ -142,7 +143,16 @@ const BtnLogout = styled.button`
 `;
 
 const Sidebar = () => {
-  const user = true;
+  const { user } = useContext(FirebaseContext);
+
+  const handleSingOut = () => {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      console.log('Se Cerro la seccion')
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
 
   return ( 
       <Aside>
@@ -150,14 +160,16 @@ const Sidebar = () => {
           {user ? (
             
             <>
-              <h2>Hola: <span>{''}Luis Mario</span></h2>
+              <h2>Hola: <span>{''}{user.displayName}</span></h2>
               <ContainerBtns>
                 <div>
                   <Link to="/nuevo-producto">
                     <BtnNewProject type="button"><span>+</span>Nuevo Producto</BtnNewProject>
                   </Link>
                 </div>
-                <BtnLogout>
+                <BtnLogout
+                  onClick={handleSingOut}
+                >
                   <span>
                     <img src={iconLogout} alt="" />
                   </span>

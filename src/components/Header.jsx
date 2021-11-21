@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import Nav from './Nav';
 import Search from './Search';
+import { FirebaseContext } from '../firebase';
 
 const LogoHeader = styled.h1`
 
@@ -35,7 +36,7 @@ const HeaderStyled = styled.header`
 `;
 
 const Header = () => {
-  const user = true;
+  const { user } = useContext(FirebaseContext);
 
   return ( 
     <>

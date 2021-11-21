@@ -1,105 +1,116 @@
-import React from 'react';
-import styled from '@emotion/styled';
+import React, { useContext } from 'react'; 
+import { useNavigate } from 'react-router-dom';
+import {
+  ContainerForm,
+  Form,
+  Label,
+  Input,
+  ButtonProduct,
+  TextArea,
+  H2,
+  Error
+} from '../components/FormProductsStyles';
 
+import useValidation from '../hooks/useValidacion';
+import validateNewProducts from '../validation/validateNewProducts';
 
+import { FirebaseContext } from '../firebase';
+import { getFirestore } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
-const ContainerForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  min-height: 100vh;
-  margin: 2rem 0;
-`;
-const Form = styled.form`
-  display: flex;  
-  flex-direction: column;
-  gap: 1rem;
-  width: 300px;
-`;
-const Label = styled.label`
-  color: var(--color-text-primary);
-`;
-const Input = styled.input`
-  border: none;
-  width: 95%;
-  padding: 2rem;
-  background-color: var(--light-secondary);
-  border-radius: 1rem;
-
-  &::placeholder {
-    color: var(--color-text-primary);
-    font-family: var(--font);
-  }
-`;
-
-const ButtonNewProduct = styled.button`
-  border: none;
-  width: 95%;
-  padding: 2rem;
-  background-color: var(--light-secondary);
-  border-radius: 1rem;
-  margin-top: 3rem;
-  font-family: var(--font);
-  font-size: 1.8rem;
-  color: white;
-  background-color: var(--blue-primary);
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--blue-secondary);
-    transition: .3s ease;
-  }
-`;
-
-const TextArea = styled.textarea`
-  width: 95%;
-  background-color: var(--light-secondary);
-  border-radius: 1rem;
-  height: 20rem;
-  padding: 1rem;
-  border: none;
-`;
-
-const H2 = styled.h2`
-  width: 300px;
-  color: var(--color-text-secondary);
-`;
-
+const INITIAL_STATE = {
+  name:'',
+  price: '',
+  image: '',
+  description: ''
+}
 
 const NewProducts = () => {
+
+  const { user } = useContext(FirebaseContext);
+
+  const { 
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    handleBlur
+   } = useValidation(INITIAL_STATE, validateNewProducts, handleNewProducts);
+
+   const { name, price, image, description } = values;
+
+   const navigate = useNavigate();
+
+   async function handleNewProducts() {
+    const db = getFirestore();
+
+     if(!user) {
+       return navigate('/login');
+     }
+     const producto = {
+       name,
+       price,
+       image,
+       description
+     }
+
+     try {
+      const docRef = await addDoc(collection(db, "products"), producto);
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+
+
+   }
   return ( 
     <ContainerForm>
       <H2>Crea un nuevo producto</H2>
-      <Form>
-          <Label htmlFor="nombre">Nombre del producto</Label>
+      <Form
+        onSubmit={handleSubmit}
+        noValidate
+      >
+          <Label htmlFor="name">Nombre del producto</Label>
           <Input 
             type="text" 
-            name="nombre" 
+            name="name" 
             id="" 
             placeholder="Nombre del producto"
+            value={name}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
-        
-          <Label htmlFor="precio">Precio del producto</Label>
-          <Input 
-            type="number" 
-            name="precio" 
-            id="" 
-            placeholder="12000 "
-          />
+          {errors.name && <Error>*{errors.name}</Error>}
 
-          <Label htmlFor="precio">Imagen del producto</Label>
+          <Label htmlFor="price">Precio del producto</Label>
+          <Input 
+            type="text" 
+            name="price" 
+            id="price" 
+            placeholder="12000 "
+            value={price}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {errors.price && <Error>*{errors.price}</Error>}
+
+          <Label htmlFor="imagen">Imagen del producto</Label>
           <Input 
             type="file" 
-            name="precio" 
-            id="" 
-            placeholder="12000 "
+
           />
 
           <Label htmlFor="descripcion">Descripción del producto</Label>
-          <TextArea></TextArea>
-        
-          <ButtonNewProduct type="submit">Crear Producto</ButtonNewProduct>
+          <TextArea
+            name="description"
+            placeholder="Agrega una descripcion del producto..."
+            value={description}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {errors.description && <Error>*{errors.description}</Error>}
+
+          <ButtonProduct type="submit">Crear Producto</ButtonProduct>
 
       </Form>
       

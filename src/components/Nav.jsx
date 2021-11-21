@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import { BsFillSunFill, BsMoonFill } from "react-icons/bs";
-import iconMoon from '../assets/icons/icon-moon.svg';
-import iconSun from '../assets/icons/icon-sun.svg';
+import { FirebaseContext } from '../firebase';
+
 
 
 const NavContainer = styled.nav`
@@ -100,7 +99,7 @@ const Input = styled.input`
 
 const Nav = () => {
 
-  const user = true;
+  const { user } = useContext(FirebaseContext);
 
   return (
     <NavContainer>

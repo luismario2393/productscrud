@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Sidebar from '../components/Sidebar';
 import styled from '@emotion/styled';
 import aguilaOriginal from '../assets/image/aguila-cerveza.png';
 import { Link } from 'react-router-dom';
+import { FirebaseContext } from '../firebase';
 
 const Container = styled.div`
   display: flex;
@@ -102,7 +103,6 @@ const ContainerButton = styled.div`
   gap: 1rem;
 
   button {
-    background-color: var(--blue-primary);
     border: none;
     color: white;
     font-size: 1.6rem;
@@ -111,6 +111,9 @@ const ContainerButton = styled.div`
     width: 10rem;
     border-radius: 0.5rem;
     cursor: pointer;
+  }
+  a button:first-of-type {
+    background-color: var(--blue-primary);
   }
   button:hover {
     color: var(--color-text-secondary);
@@ -124,7 +127,7 @@ const ContainerButton = styled.div`
 
 const Home = () => {
 
-  const user = true;
+  const { user } = useContext(FirebaseContext);
 
 
   return ( 
@@ -167,7 +170,7 @@ const Home = () => {
               </ContainerTextArea>
 
               <ContainerButton>
-                <button type="button">Editar</button>
+                <Link to={'editar-producto'}><button type="button">Editar</button></Link> 
                 <button type="button">Eliminar</button>
               </ContainerButton>
             </ContainerProduct>
