@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { getFirestore, doc, deleteDoc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -110,7 +112,17 @@ const ContainerButton = styled.div`
 
 const Productos = ({product}) => {
 
+  const navigate = useNavigate();
+
   const { urlImage, name, price, description, id } = product;
+
+  const handleDelete = async (id) => {
+    const db = getFirestore();
+
+    await deleteDoc(doc(db, "products", id));
+    window.location.href = window.location.href;
+  }
+
   return ( 
     <>
       <ContainerProduct>
@@ -133,14 +145,16 @@ const Productos = ({product}) => {
         <ContainerTextArea>
           <p>Descripción</p>
           <p>
-            {description.slice(0, 30)}{'...'}
+            {description.slice(0, 5)}{'...'}
             <Link to={`productos/producto/${id}`}>Ver más</Link>
           </p>
         </ContainerTextArea>
 
         <ContainerButton>
           <Link to={`/productos/editar-producto/${id}`}><button type="button">Editar</button></Link> 
-          <button type="button">Eliminar</button>
+          <button type="button"
+            onClick={() => handleDelete(id)}
+          >Eliminar</button>
         </ContainerButton>
       </ContainerProduct>
 

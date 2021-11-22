@@ -59,7 +59,8 @@ const NewProducts = () => {
        name,
        price,
        urlImage,
-       description
+       description,
+       userId: user.uid,
      }
 
      try {

@@ -52,7 +52,8 @@ const Home = () => {
   } , []);
 
 
-
+  console.log(products);
+  const { userId } = products;
 
   return ( 
     <div className="container-app">
@@ -61,38 +62,26 @@ const Home = () => {
       </div>
       <div className="main-section">
       <ContainerHome>
-        {products.length > 0 ? (
+
           <>
             <h2>Tus productos</h2>
             <p>Aquí podrás ver todos los productos que has creado</p>
           </>
-        ) : (
-          <>
-            <h2>Empieza a agregar tus productos</h2>
-            <p>Aquí podrás ver todos los productos cuando los crees</p>
-          </>
-        )}
+
+              
+        
         { products.map(product => (
-          
           <div
             key={product.id}
           >
-              {user ? (
+              {user && user.uid === product.userId && (
                 <ProductosContainer 
                   product={product}
                 />
-              ) : (
-                <>
-                  <Container>
-                    <h2>Bienvenido</h2>
-                    <p>
-                      Crea una cuenta y empieza a crear tus productos.
-                    </p>
-                  </Container>
-                </>
               )}
           </div>
         ))}
+        
           
         </ContainerHome>
       </div>

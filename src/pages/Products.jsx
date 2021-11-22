@@ -35,8 +35,11 @@ const Products = () => {
 
   return ( 
     <Container>
+      
       {products.map(product => (
-        <ProductosContainer product={product} key={product.id} />
+        user && user.uid === product.userId && (
+          <ProductosContainer product={product} key={product.id} />
+        )
       ))}
     </Container>
    );

@@ -2,7 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { FirebaseContext } from '../firebase';
-import { getFirestore, doc, getDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, deleteDoc } from "firebase/firestore";
+
 
 const ContainerProduct = styled.div`
   background-color: var(--light-primary);
@@ -117,7 +118,7 @@ const Product = () => {
   const [ product, setProduct ] = useState({});
 
   const idPage = window.location.pathname.split('/')[3];
-  const { firebase, user } = useContext(FirebaseContext);
+  const { user } = useContext(FirebaseContext);
   
   useEffect(() => {
     const getProducts = async () => {
@@ -135,45 +136,54 @@ const Product = () => {
     
   } , [idPage]);
 
-  console.log(product);
-  const { name, price, description, urlImage, id } = product;
+  
+  
+  const handleDelete = async (id) => {
+    const db = getFirestore();
+    
+    await deleteDoc(doc(db, "products", id));
+    window.location.href = '/';
+  }
 
+  
+  const { name, price, description, urlImage, id, userId } = product;
+  
 
   return ( 
     <div>
-      <ContainerProduct>
-        <div>
-          <ContainerImg>
-            <p>Imagen</p>
-            <img src={urlImage} alt="Aguila Original" />
-          </ContainerImg>
-        </div>
-        <div>
-          <ContainerText>
-            <p>name</p>
-            <p>{name}</p>
-          </ContainerText>
+      { user && user.uid === userId && (
+        <ContainerProduct>
+          <div>
+            <ContainerImg>
+              <p>Imagen</p>
+              <img src={urlImage} alt="Aguila Original" />
+            </ContainerImg>
+          </div>
+          <div>
+            <ContainerText>
+              <p>name</p>
+              <p>{name}</p>
+            </ContainerText>
 
-          <ContainerText>
-            <p>Precio</p>
-            <p>$ {price}</p>
-          </ContainerText>
-          
-          <ContainerTextArea>
-            <p>Descripción</p>
-            <p>
-              {description}
-              <Link to={`productos/producto/${id}`}>Ver más</Link>
-            </p>
-          </ContainerTextArea>
-          <ContainerButton>
-            <Link to={`/productos/editar-producto/${idPage}`}><button type="button">Editar</button></Link> 
-            <button type="button">Eliminar</button>
-          </ContainerButton>
-        </div>
-      </ContainerProduct>
-
-
+            <ContainerText>
+              <p>Precio</p>
+              <p>$ {price}</p>
+            </ContainerText>
+            
+            <ContainerTextArea>
+              <p>Descripción</p>
+              <p>
+                {description}
+                <Link to={`productos/producto/${product.id}`}>Ver más</Link>
+              </p>
+            </ContainerTextArea>
+            <ContainerButton>
+              <Link to={`/productos/editar-producto/${product.idPage}`}><button type="button">Editar</button></Link> 
+              <button type="button" onClick={() => handleDelete(idPage)} >Eliminar</button>
+            </ContainerButton>
+          </div>
+        </ContainerProduct>
+      )}
     </div>
 
 
