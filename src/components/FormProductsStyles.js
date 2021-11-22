@@ -7,7 +7,7 @@ export const ContainerForm = styled.div`
   align-items: center;
   justify-content: space-evenly;
   min-height: 100vh;
-  margin: 2rem 0;
+  padding: 2rem 0;
 `;
 export const Form = styled.form`
   display: flex;  
@@ -66,7 +66,7 @@ export const TextArea = styled.textarea`
 
 export const H2 = styled.h2`
   width: 300px;
-  color: var(--color-text-secondary);
+  color: var(--blue-primary);
 `;
 export const Error = styled.p`
   color: #f33b3b;

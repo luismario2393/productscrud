@@ -5,26 +5,18 @@ import { FirebaseContext } from '../firebase';
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import ProductosContainer from '../components/ProductosContainer';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
 
-  h2 {
-    color: var(--color-text-secondary);
-  }
-
-  p {
-    color: var(--color-text-primary);
-  }
-
-`;
 const ContainerHome = styled.div`
   text-align: center;
 `;
 
+const H2 = styled.h2`
+  color: var(--color-text-primary);
+`;
+
+const P = styled.p`
+  color: var(--blue-primary);
+`;
 
 
 const Home = () => {
@@ -64,8 +56,8 @@ const Home = () => {
       <ContainerHome>
 
           <>
-            <h2>Tus productos</h2>
-            <p>Aquí podrás ver todos los productos que has creado</p>
+            <H2>Tus productos</H2>
+            <P>Aquí podrás ver todos los productos que has creado</P>
           </>
 
               

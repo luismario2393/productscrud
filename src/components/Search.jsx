@@ -5,6 +5,7 @@ import iconSearch from '../assets/icons/icon-search.svg';
 
 
 const InputText = styled.input`
+  background: transparent;
   border-radius: 2.5rem;
   border: none;
   width: 100%;
@@ -25,7 +26,7 @@ const InputSubmit = styled.button`
   background-size: cover;
   background-image: url(${iconSearch});
   background-repeat: no-repeat;
-  background-color: white;
+  background-color: transparent;
   border: none;
   text-indent: -9999px;
   &:hover {

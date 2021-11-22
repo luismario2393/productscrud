@@ -1,13 +1,6 @@
 
 import { firebaseConfig } from "./config";
 import app from 'firebase/compat/app';
-import {  
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  updateProfile,
-  signInWithEmailAndPassword,
-  signOut 
-} from 'firebase/auth';
 import  'firebase/compat/firestore';
 import 'firebase/compat/storage';
 

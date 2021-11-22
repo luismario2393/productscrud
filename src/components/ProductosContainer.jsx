@@ -2,12 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { getFirestore, doc, deleteDoc } from "firebase/firestore";
-import { useNavigate } from 'react-router-dom';
+
 
 
 
 const ContainerProduct = styled.div`
-  background-color: var(--light-primary);
+  background-color: transparent;
+  border: 1px solid var(--color-text-primary);
   padding: 2rem;
   border-radius: 1rem;
   display: grid;
@@ -28,7 +29,7 @@ const ContainerImg = styled.div`
   }
   p {
     font-weight: bold;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
   }
   img {
     width: 5rem;
@@ -47,7 +48,7 @@ const ContainerText = styled.div`
   }
   p {
     font-weight: bold;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
   }
   p:last-of-type {
     color: var(--color-text-primary);
@@ -63,7 +64,7 @@ const ContainerTextArea = styled.div`
   }
   p {
     font-weight: bold;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
   }
   p:last-of-type {
     color: var(--color-text-primary);
@@ -71,10 +72,10 @@ const ContainerTextArea = styled.div`
     line-height: 1;
 
     a {
-      color: var(--color-text-secondary);
+      color: var(--blue-primary);
     }
     a:hover{
-      border-bottom: 1px solid var(--color-text-secondary);
+      border-bottom: 1px solid var(--blue-primary);
       transition: .3s ease;
     }
   }
@@ -112,7 +113,6 @@ const ContainerButton = styled.div`
 
 const Productos = ({product}) => {
 
-  const navigate = useNavigate();
 
   const { urlImage, name, price, description, id } = product;
 
@@ -133,7 +133,7 @@ const Productos = ({product}) => {
         </ContainerImg>
 
         <ContainerText>
-          <p>name</p>
+          <p>Name</p>
           <p>{name}</p>
         </ContainerText>
 

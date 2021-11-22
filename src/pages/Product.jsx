@@ -10,9 +10,11 @@ const ContainerProduct = styled.div`
   padding: 2rem;
   border-radius: 1rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;;
+  grid-template-columns: 1fr 1fr;
   column-gap: 1rem;
-  margin-bottom: 2rem;
+  min-height: 100%;
+  background: transparent;
+  border: 1px solid var(--light-primary);
   @media (max-width: 550px) { 
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
@@ -27,7 +29,7 @@ const ContainerImg = styled.div`
   }
   p {
     font-weight: bold;
-    color: var(--color-text-secondary);
+    color: var(--blue-primary);
   }
   img {
     width: 30rem;
@@ -46,7 +48,7 @@ const ContainerText = styled.div`
   }
   p {
     font-weight: bold;
-    color: var(--color-text-secondary);
+    color: var(--blue-primary);
   }
   p:last-of-type {
     color: var(--color-text-primary);
@@ -62,7 +64,7 @@ const ContainerTextArea = styled.div`
   }
   p {
     font-weight: bold;
-    color: var(--color-text-secondary);
+    color: var(--blue-primary);
   }
   p:last-of-type {
     color: var(--color-text-primary);
@@ -70,10 +72,10 @@ const ContainerTextArea = styled.div`
     line-height: 1;
 
     a {
-      color: var(--color-text-secondary);
+      color: var(--blue-primary);
     }
     a:hover{
-      border-bottom: 1px solid var(--color-text-secondary);
+      border-bottom: 1px solid var(--blue-primary);
       transition: .3s ease;
     }
   }
@@ -110,7 +112,10 @@ const ContainerButton = styled.div`
 `;
 
 
-
+const Div = styled.div`
+  padding: 5rem;
+  min-height: 100vh;
+`;
 
 
 const Product = () => {
@@ -150,7 +155,7 @@ const Product = () => {
   
 
   return ( 
-    <div>
+    <Div>
       { user && user.uid === userId && (
         <ContainerProduct>
           <div>
@@ -161,7 +166,7 @@ const Product = () => {
           </div>
           <div>
             <ContainerText>
-              <p>name</p>
+              <p>Name</p>
               <p>{name}</p>
             </ContainerText>
 
@@ -184,7 +189,7 @@ const Product = () => {
           </div>
         </ContainerProduct>
       )}
-    </div>
+    </Div>
 
 
   );

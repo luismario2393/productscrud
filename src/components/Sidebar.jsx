@@ -18,7 +18,7 @@ const Aside = styled.aside`
     color: var(--color-text-primary);
 
     span {
-      color: var(--color-text-secondary);
+      color: var(--blue-primary);
     }
   }
 

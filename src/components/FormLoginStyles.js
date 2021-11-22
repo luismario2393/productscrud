@@ -6,6 +6,7 @@ export const ContainerForm = styled.div`
   align-items: center;
   justify-content: space-evenly;
   min-height: 100vh;
+ 
 `;
 export const Form = styled.form`
   display: flex;  
@@ -73,7 +74,7 @@ export const ContainerBtn = styled.div`
 
 export const H2 = styled.h2`
   width: 300px;
-  color: var(--color-text-secondary);
+  color: var(--blue-primary);
 `;
 
 export const Error = styled.p`

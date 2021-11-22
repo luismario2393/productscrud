@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import firebase from '../firebase';
+import { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function useAuthentication() {
