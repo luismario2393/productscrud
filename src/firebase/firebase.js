@@ -1,8 +1,28 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { firebaseConfig } from "./config";
 
-const firebase = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebase);
+import { firebaseConfig } from "./config";
+import app from 'firebase/compat/app';
+import {  
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  updateProfile,
+  signInWithEmailAndPassword,
+  signOut 
+} from 'firebase/auth';
+import  'firebase/compat/firestore';
+import 'firebase/compat/storage';
+
+class Firebase {
+  constructor() {
+    !app.apps.length && app.initializeApp(firebaseConfig);
+    this.storage = app.storage();
+ 
+  }
+  
+}
+
+const firebase = new Firebase();
 
 export default firebase;
+
+
+

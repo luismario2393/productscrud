@@ -1,5 +1,6 @@
-import React, { useContext } from 'react'; 
+import React, { useContext, useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';
+import FileUploader from 'react-firebase-file-uploader';
 import {
   ContainerForm,
   Form,
@@ -18,6 +19,7 @@ import { FirebaseContext } from '../firebase';
 import { getFirestore } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore";
 
+
 const INITIAL_STATE = {
   name:'',
   price: '',
@@ -27,7 +29,13 @@ const INITIAL_STATE = {
 
 const NewProducts = () => {
 
-  const { user } = useContext(FirebaseContext);
+  // state imagenes
+  const [ nameImage, setNameImage] = useState('');
+  const [ uploading, setUploading ] = useState(false);
+  const [ progress, setProgress ] = useState(0);
+  const [ urlImage, setUrlImage ] = useState('');
+
+  const { user, firebase } = useContext(FirebaseContext);
 
   const { 
     values,
@@ -50,7 +58,7 @@ const NewProducts = () => {
      const producto = {
        name,
        price,
-       image,
+       urlImage,
        description
      }
 
@@ -60,9 +68,42 @@ const NewProducts = () => {
       } catch (e) {
         console.error("Error adding document: ", e);
       }
-
-
+      navigate('/');
    }
+
+   const handleUploadStart = () => {
+    setProgress(0);
+    setUploading(true);
+  }
+
+  const handleProgress = async (progreso, task) => {
+    console.log(progreso);
+    setProgress(progreso);
+    if(progreso === 100){
+        handleUploadSuccess(task.snapshot.ref.name);
+    }
+  }
+
+  const handleUploadError = error => {
+    setUploading(error);
+    console.error(error);
+  }
+
+  const handleUploadSuccess = async name => {
+    setProgress(100);
+    setUploading(false);
+    setNameImage(name)
+    await firebase.
+      storage
+      .ref("products")
+      .child(name)
+      .getDownloadURL()
+      .then(url => {
+        console.log(url);
+        setUrlImage(url);
+      });
+  }
+
   return ( 
     <ContainerForm>
       <H2>Crea un nuevo producto</H2>
@@ -95,8 +136,17 @@ const NewProducts = () => {
           {errors.price && <Error>*{errors.price}</Error>}
 
           <Label htmlFor="imagen">Imagen del producto</Label>
-          <Input 
-            type="file" 
+          <FileUploader 
+            accept="image/*"
+            id="imagen"
+            name="image"
+            randomizeFilename
+            storageRef={firebase.storage.ref("products")}
+            onUploadStart={handleUploadStart}
+            onUploadError={handleUploadError}
+            onUploadSuccess={handleUploadSuccess}
+            onProgress={handleProgress}
+
 
           />
 

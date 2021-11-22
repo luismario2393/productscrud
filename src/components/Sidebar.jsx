@@ -8,7 +8,7 @@ import { FirebaseContext } from '../firebase';
 import { getAuth, signOut } from "firebase/auth";
 
 const Aside = styled.aside`
-  min-height: 100vh;
+  min-height: 100%;
   padding: 2rem;
   box-shadow: 0px 1.5px 5px 0px rgba(0,0,0,0.75);
   margin-top: 2px;

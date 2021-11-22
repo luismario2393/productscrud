@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   ContainerForm,
   Form,
@@ -12,6 +12,11 @@ import {
 
 
 const EditProduct = () => {
+
+  const idPage = window.location.pathname.split('/')[3];
+  console.log(idPage);
+
+
   return ( 
     <ContainerForm>
       <H2>Editar producto</H2>

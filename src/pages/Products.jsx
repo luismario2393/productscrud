@@ -1,17 +1,44 @@
-import React from 'react';
-import Sidebar from '../components/Sidebar';
+import React, { useEffect, useState, useContext } from 'react';
+import { FirebaseContext } from '../firebase';
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import ProductosContainer from '../components/ProductosContainer';
+import styled from '@emotion/styled';
+
+const Container = styled.div`
+  padding: 2rem;
+`;
+
+
 
 const Products = () => {
-  return ( 
-    <div className="container-app">
-      <div className="aside">
-        <Sidebar />
-      </div>
-      <div className="main-section">
-        <h2>Desde Productos</h2>
-      </div>
-    </div>
+  const { user } = useContext(FirebaseContext);
 
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const db = getFirestore();
+
+      const querySnapshot = await getDocs(collection(db, "products"));
+
+      return querySnapshot;
+    }
+    getProducts().then(querySnapshot => {
+      setProducts(querySnapshot.docs.map(doc => { 
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      }));
+    });
+  } , []);
+
+  return ( 
+    <Container>
+      {products.map(product => (
+        <ProductosContainer product={product} key={product.id} />
+      ))}
+    </Container>
    );
 }
  

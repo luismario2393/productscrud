@@ -1,15 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
-import styled from '@emotion/styled';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { FirebaseContext } from '../firebase';
-import { getFirestore, doc, getDoc, collection } from "firebase/firestore";
+import styled from '@emotion/styled';
+
+
 
 const ContainerProduct = styled.div`
   background-color: var(--light-primary);
   padding: 2rem;
   border-radius: 1rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   column-gap: 1rem;
   margin-bottom: 2rem;
   @media (max-width: 550px) { 
@@ -29,8 +29,8 @@ const ContainerImg = styled.div`
     color: var(--color-text-secondary);
   }
   img {
-    width: 30rem;
-    height: 30rem;
+    width: 5rem;
+    height: 5rem;
     border: 1px solid var(--light-secondary);
     border-radius: 0.5rem;
   }
@@ -80,18 +80,18 @@ const ContainerTextArea = styled.div`
 
 const ContainerButton = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  flex-direction: column;
   gap: 1rem;
-  margin-top: 5rem;
 
   button {
     border: none;
     color: white;
     font-size: 1.6rem;
     font-family: var(--font);
-    padding: 3rem;
-    width: 15rem;
+    padding: 1rem;
+    width: 10rem;
     border-radius: 0.5rem;
     cursor: pointer;
   }
@@ -108,76 +108,45 @@ const ContainerButton = styled.div`
   }
 `;
 
+const Productos = ({product}) => {
 
-
-
-
-const Product = () => {
-
-  const [ product, setProduct ] = useState({});
-
-  const idPage = window.location.pathname.split('/')[3];
-  const { firebase, user } = useContext(FirebaseContext);
-  
-  useEffect(() => {
-    const getProducts = async () => {
-      const db = getFirestore();
-
-      const querySnapshot = doc(collection(db, "products"), idPage);
-      const product = await getDoc(querySnapshot);
-      if(product.exists) {
-        setProduct(product.data());
-      } else {
-        console.log('No existe');
-      }
-    };
-    getProducts();
-    
-  } , [idPage]);
-
-  console.log(product);
-  const { name, price, description, urlImage, id } = product;
-
-
+  const { urlImage, name, price, description, id } = product;
   return ( 
-    <div>
+    <>
       <ContainerProduct>
-        <div>
-          <ContainerImg>
-            <p>Imagen</p>
-            <img src={urlImage} alt="Aguila Original" />
-          </ContainerImg>
-        </div>
-        <div>
-          <ContainerText>
-            <p>name</p>
-            <p>{name}</p>
-          </ContainerText>
+        
+        <ContainerImg>
+          <p>Imagen</p>
+          <img src={urlImage} alt="Aguila Original" />
+        </ContainerImg>
 
-          <ContainerText>
-            <p>Precio</p>
-            <p>$ {price}</p>
-          </ContainerText>
-          
-          <ContainerTextArea>
-            <p>Descripción</p>
-            <p>
-              {description}
-              <Link to={`productos/producto/${id}`}>Ver más</Link>
-            </p>
-          </ContainerTextArea>
-          <ContainerButton>
-            <Link to={`/productos/editar-producto/${idPage}`}><button type="button">Editar</button></Link> 
-            <button type="button">Eliminar</button>
-          </ContainerButton>
-        </div>
+        <ContainerText>
+          <p>name</p>
+          <p>{name}</p>
+        </ContainerText>
+
+        <ContainerText>
+          <p>Precio</p>
+          <p>$ {price}</p>
+        </ContainerText>
+        
+        <ContainerTextArea>
+          <p>Descripción</p>
+          <p>
+            {description.slice(0, 30)}{'...'}
+            <Link to={`productos/producto/${id}`}>Ver más</Link>
+          </p>
+        </ContainerTextArea>
+
+        <ContainerButton>
+          <Link to={`/productos/editar-producto/${id}`}><button type="button">Editar</button></Link> 
+          <button type="button">Eliminar</button>
+        </ContainerButton>
       </ContainerProduct>
 
-
-    </div>
-
+    </>
 
   );
 }
  
-export default Product;
+export default Productos;
