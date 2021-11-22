@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import iconSearch from '../assets/icons/icon-search.svg';
+import { FirebaseContext } from '../firebase';
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+
 
 
 
@@ -56,19 +59,73 @@ const ContenedorSearch = styled.div`
 
 
 const Search = () => {
+
+  const { user } = useContext(FirebaseContext);
+
+  const [searchValue, setSearchValue] = useState('');
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const db = getFirestore();
+
+      const querySnapshot = await getDocs(collection(db, "products"));
+
+      return querySnapshot;
+    }
+    getProducts().then(querySnapshot => {
+      setProducts(querySnapshot.docs.map(doc => { 
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      }));
+    });
+  } , []);
+
+
+
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value);
+  }
+
+  let SearchProducts = [];
+
+  if (searchValue <= 1) {
+    SearchProducts = products;
+  } else {
+    SearchProducts = products.filter(product => {
+      const productText = product.name.toLowerCase();
+      const searchText = searchValue.toLowerCase();
+      return productText.includes(searchText);
+    })
+  }
+
+  
+
+  console.log(SearchProducts);
+
+  
+
+
   return ( 
 
       <form >
-        <ContenedorSearch>
-          <InputText 
-            type="text" 
-            placeholder="Buscar Producto..."
-          />
-          <InputSubmit 
-            type="button"
-            onClick={() => {console.log('sirve')}}
-          >Buscar</InputSubmit>
-        </ContenedorSearch>
+        {user  && (
+
+          <ContenedorSearch>
+            <InputText 
+              type="text" 
+              placeholder="Buscar Producto..."
+              value={searchValue}
+              onChange={handleSearch}
+            />
+            
+            <InputSubmit 
+              type="button"
+            >Buscar</InputSubmit>
+          </ContenedorSearch>
+        )}
       </form>
   );
 }

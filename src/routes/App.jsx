@@ -12,8 +12,10 @@ import firebase, { FirebaseContext } from '../firebase';
 import useAuthentication from '../hooks/useAuthentication';
 import Products from '../pages/Products';
 
+
 function App() {
   const user = useAuthentication();
+  
   return (
     <>
       <FirebaseContext.Provider value={{firebase, user}}> 
